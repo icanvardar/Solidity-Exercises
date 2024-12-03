@@ -10,8 +10,18 @@ contract BlockNumber {
      */
 
     address public lastCaller;
+    uint256 private lastBlock;
 
     function callMe() external {
-        /// your code here
+      uint256 blockNumber = block.number;
+
+      if (blockNumber == lastBlock) {
+        revert("Update in the same block is not allowed!");
+      }
+
+      assembly {
+        sstore(lastCaller.slot, caller())
+        sstore(lastBlock.slot, blockNumber)
+      }
     }
 }

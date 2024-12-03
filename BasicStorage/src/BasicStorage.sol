@@ -5,10 +5,12 @@ contract BasicStorage {
     uint256 private x;
 
     function setX(uint256 newValue) public {
-        // your code here
+        assembly {
+          sstore(x.slot, newValue)
+        }
     }
 
     function getX() public view returns (uint256) {
-        // your code here
+        return x;
     }
 }

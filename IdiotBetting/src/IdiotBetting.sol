@@ -13,11 +13,39 @@ contract IdiotBettingGame {
            period has ended. It transfers the entire balance of the contract to the winner.
     */
 
+    struct BetInfo {
+      uint256 highestAmount;
+      address bettor;
+      uint256 endTime;
+    }
+
+    BetInfo public betInfo;
+
     function bet() public payable {
-        // your code here
+      (bool sent, ) = address(this).call{value: msg.value}("");
+
+      if (!sent) {
+        revert("Unable to send ether!");
+      }
+
+      if (msg.value > betInfo.highestAmount) {
+        betInfo.highestAmount = msg.value;
+        betInfo.bettor = msg.sender;
+        betInfo.endTime = block.timestamp + 1 hours;
+      }
     }
 
     function claimPrize() public {
-        // your code here
+      if (betInfo.endTime <= block.timestamp && betInfo.bettor == msg.sender) {
+        (bool sent,) = msg.sender.call{value: address(this).balance}("");
+
+        if (!sent) {
+          revert("Unable to send ether!");
+        }
+      } else {
+        revert("Unable to claim prize!");
+      }
     }
+
+    receive() external payable {}
 }

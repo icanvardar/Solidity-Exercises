@@ -14,6 +14,16 @@ contract DistributeV2 {
     constructor() payable {}
 
     function distributeEther(address[] memory addresses) public {
-        // your code here
+      uint256 i = 0;
+      for (i; i < addresses.length; ++i) {
+        (bool sent, ) = addresses[i].call{value: 1 ether}("");
+
+        // redundant for this scenario, however good for demonstration
+        if (!sent) {
+          continue;
+        }
+      }
     }
+
+    receive() external payable {}
 }

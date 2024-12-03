@@ -4,6 +4,8 @@ pragma solidity ^0.8.17;
 import "forge-std/Test.sol";
 import "../src/CodeSize.sol";
 
+import "forge-std/console.lo";
+
 contract CodeSizeTest is Test {
     CodeSize public codeSize;
 
