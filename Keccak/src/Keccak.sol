@@ -6,7 +6,12 @@ contract Keccak {
      * In this exercise, the task is to return the correct keccak256 of any value passed into the keccak function
      */
 
-    function keccak(uint256 x) external pure returns (bytes32) {
-        // your code here
+    function keccak(uint256 x) external pure returns (bytes32 result) {
+      assembly {
+        let ptr := mload(0x40)
+        mstore(ptr, x)
+
+        result := keccak256(ptr, 0x20) 
+      }
     }
 }
