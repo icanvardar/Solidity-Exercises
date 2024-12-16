@@ -10,14 +10,28 @@ contract ReducingPayout {
         Hint: 1 second deducts 0.0011574% from the current %.
     */
 
-    // The time 1 ether was sent to this contract
     uint256 public immutable depositedTime;
 
     constructor() payable {
+        require(msg.value == 1 ether, "Contract must be initialized with 1 ether");
         depositedTime = block.timestamp;
     }
 
     function withdraw() public {
-        // your code here
+        uint256 timePassed = block.timestamp - depositedTime;
+
+        if (timePassed > 86400) {
+            timePassed = 86400;
+        }
+
+        uint256 remainingPercentage = 1e18 - (timePassed * 1e18 / 86400);
+
+        uint256 claimableAmount = (address(this).balance * remainingPercentage) / 1e18;
+
+        require(claimableAmount > 0, "No ether left to withdraw");
+
+        (bool success, ) = msg.sender.call{value: claimableAmount}("");
+        require(success, "Transfer failed");
     }
 }
+

@@ -14,7 +14,7 @@ contract SpecialNumbersTest is Test {
     function testMakeNumberSpecial() external {
         specialNumbers.makeNumberSpecial(42);
         assertEq(
-            specialNumbers.isSpecial(42),
+            specialNumbers.isNumberSpecial(42),
             true,
             "expected specialNumbers.isSpecial(42) to be true"
         );
@@ -24,7 +24,7 @@ contract SpecialNumbersTest is Test {
         specialNumbers.makeNumberSpecial(42);
         specialNumbers.makeNumberNotSpecial(42);
         assertEq(
-            specialNumbers.isSpecial(42),
+            specialNumbers.isNumberSpecial(42),
             false,
             "expected specialNumbers.isSpecial(42) to be false"
         );

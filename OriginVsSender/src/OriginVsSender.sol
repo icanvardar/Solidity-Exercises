@@ -15,7 +15,15 @@ contract OriginVsSender {
 
     uint256 public number;
 
-    function setNumber(uint256 num) external {
-        /// your code here
+    modifier isEOA() {
+      if (msg.sender.code.length != 0 || tx.origin.code.length != 0) {
+        revert("busted");
+      }
+
+      _;
+    }
+
+    function setNumber(uint256 num) isEOA external {
+      number = num;
     }
 }

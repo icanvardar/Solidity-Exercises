@@ -11,12 +11,20 @@ contract OnlyOwner {
     address owner;
     uint256 public magicNumber;
 
+    modifier onlyOwner() {
+      if (msg.sender != owner) {
+        revert("unauthorized op! busted");
+      }
+
+      _;
+    }
+
     constructor(address _owner, uint256 _magicNumber) {
         owner = _owner;
         magicNumber = _magicNumber;
     }
 
-    function updateMagicNumber(uint256 _number) public {
+    function updateMagicNumber(uint256 _number) onlyOwner public {
         magicNumber = _number;
     }
 }
